@@ -1,0 +1,85 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'edu.sc.seis.launch4j' version '2.5.4'
+}
+
+configurations {
+    testImplementation {
+        extendsFrom implementation
+    }
+    // Résoudre les conflits
+    all*.exclude group: 'org.hamcrest', module: 'hamcrest-core'
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+
+    implementation 'org.apache.pdfbox:pdfbox:2.0.30'
+    implementation 'org.json:json:20230227'
+    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+javafx {
+    version = "17"
+    modules = [ 'javafx.controls' , 'javafx.fxml', 'javafx.media']
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+sourceSets{
+	main {
+		java {
+			srcDirs= ["./src/main/java"]
+		}
+		resources{
+			srcDirs= ["./src/main/resources"]
+		}
+	}
+}
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    archiveBaseName = project.name
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes 'Main-Class': "gui.Launcher"
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    } with jar
+}
+
+launch4j {
+    headerType='gui'
+    outfile = "InterProg.exe"
+    mainClassName = 'gui.Launcher'
+    icon = "${projectDir}/src/main/resources/title.ico"
+    jar = "${projectDir}/build/libs/InterProg-1.0-SNAPSHOT.jar"
+}
+
+mainClassName = 'gui.Launcher'
+application {
+    mainModule = "mainMode"
+}
+version '1.0-SNAPSHOT'
+
+tasks.named('createExe') {
+    dependsOn fatJar // S'assurer que le JAR est créé avant createExe
+}
