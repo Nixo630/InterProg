@@ -1,0 +1,57 @@
+Pour créer un exe avec gradle :
+
+. Faire une classe Launcher.java (avec Platform) qui appelle la classe principale (App.java qui extends Application)
+    - Cette classe Launcher.java doit etre dans le package gui (celui de App.java) et doit etre obligatoirement
+    appelé dans le build.gradle (donc on appelle pas directement App.java)
+    car sans ça le jar ne se crée pas 
+    (voir : https://stackoverflow.com/questions/56222506/how-to-compile-a-gradle-project-to-exe-with-gradle-launch4j-plugin)
+
+. Se baser sur mon build.gradle donc rajouter absolument :
+    - id 'edu.sc.seis.launch4j' version '2.5.4' (j'ai essayé version 3.0.4 mais ça ne fonctionnait pas)
+    - task fatJar(type: Jar) {
+        archiveBaseName = project.name
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        manifest {
+            attributes 'Main-Class': "gui.Launcher"
+        }
+        from {
+            configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        } with jar
+    }
+    - launch4j {
+        headerType='gui'
+        outfile = "InterProg.exe"
+        mainClassName = 'gui.Launcher'
+        icon = "${projectDir}/src/main/resources/title.ico"//ABSOLUMENT METTRE UN .ICO comme icon
+        //car si c'est un .png ou un .jpg, il ne sera pas reconnu
+        //voir (https://stackoverflow.com/questions/6293496/exception-in-launch4j)
+        jar = "${projectDir}/build/libs/InterProg-1.0-SNAPSHOT.jar"//peut etre que le chemin changera
+        //en fonction du projet donc il faut regarder manuellement ou est installé le jar apres le
+        //gradle fatJAr (ou gradle jar)
+    }
+    - Rajouter le module si besoin :
+        application {
+            mainModule = "mainMode"
+        }
+        (pour le module faire gaffe avec les conflits entre hamcrest et junit) et pour corriger les conflits :
+            - configurations {
+                testImplementation {
+                    extendsFrom implementation
+                }
+                // Résoudre les conflits
+                all*.exclude group: 'org.hamcrest', module: 'hamcrest-core'
+            }
+            - testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+              testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+              (et non testCompile group: 'junit', name: 'junit', version: '5.9.0')
+            - test {
+                useJUnitPlatform()
+            }
+    - tasks.named('createExe') {
+        dependsOn fatJar // S'assurer que le JAR est créé avant createExe car il se basera dessus
+    }
+. Ensuite une fois que tout ça est configuré il faut absolument lancer ces commandes dans cet ordre :
+    - gradle clean
+    - gradle fatJar (ou gradle jar)
+    - gradle build (pas tout le temps nécessaire)
+    - gradle createExe (pour créer l'exe tout simplement)

@@ -1,0 +1,7 @@
+*.gradle
+*.bat
+*.jar
+./gradlew
+.gitignore
+build
+gradle

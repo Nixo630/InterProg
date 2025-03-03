@@ -1,0 +1,20 @@
+- rajouter 'disactivate' dans le premier d'un des tableaux de roles fera chercher directement 
+les roles au début du fichier
+- tous les roles, exceptions et prompt doivent etre ecrits sans accents et caracteres bizarres
+(non prise en charge UTF-8)
+- les exceptions sont des noms (comme priso priso) de famille ou prénom, qui sont des noms composés
+avec un ou des espaces au lieu de - (convention francaise classique pour les noms)
+Attention : si vous voulez rajouter une personne qui a un nom composé avec des espaces
+(ou dans le doute) multiples (tel que Jean Jacques Henry) alors il faudra rajouter deux exceptions 
+comme suit :
+Jean Jacques
+Jean-Jacques Henry (troisieme ou quatrieme nom avec le precedent corrigé sans l'espace)
+- les versions (le 28/02/2025) dispo de gemini (seul IA gratuite en API pour l'instant) sont :
+https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash
+https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash
+https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash
+https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash
+https://generativelanguage.googleapis.com/v1/models/gemini-1.5
+https://generativelanguage.googleapis.com/v1/models/gemini-2.0 (celle utilisé par defaut)
+(voir site google : https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/inference?hl=fr)
+On peut également rajouter -001 ou -002 pour la version a la fin comme : gemini-1.5-flash-001
