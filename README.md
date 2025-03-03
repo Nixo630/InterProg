@@ -1,6 +1,7 @@
 # InterProg
 
 InterProg is a Java software designed to compare programs from different dates and categories. It allows users to analyze changes and variations between different versions of programs, making version management and modification assessment easier over time. This tool is particularly useful for technical teams aiming to ensure consistency and quality in their applications throughout the development cycle.
+
 The software supports multiple programs by processing files submitted to the application and utilizing AI-based analysis. Users can configure AI parameters and update versions directly within the application's settings. This flexibility allows the software to be initially tailored for a specific type of program while remaining adaptable to various use cases. With its AI capabilities and extensive customization options, InterProg becomes a versatile tool that can be applied by anyone, regardless of the program type.
 
 ## Installation
