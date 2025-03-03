@@ -17,7 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class GeminiAPIRequest {
-    private static final String apiKey = "AIzaSyATPup8zgVfm7XXVJ9X55GDd3Kuyelebz8";
+    private static final String apiKey = "to complete";
     private static String apiUrl = "";
 
     public static String geminiRequest(String prompt, File[] files, boolean[] goodPDFs) throws Exception {
