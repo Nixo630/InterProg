@@ -1,6 +1,6 @@
 # InterProg
 
-A brief description of what this project does and who it's for
+InterProg is a Java software designed to compare programs from different dates and categories. It allows users to analyze changes and variations between different versions of programs, making version management and modification assessment easier over time. This tool is particularly useful for technical teams aiming to ensure consistency and quality in their applications throughout the development cycle.
 
 ## Installation
 
